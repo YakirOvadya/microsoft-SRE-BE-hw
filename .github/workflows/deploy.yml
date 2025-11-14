@@ -1,0 +1,71 @@
+name: Build & Deploy to AKS
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+env:
+  REGISTRY: ${{ secrets.ACR_URL }}
+  AKS_RESOURCE_GROUP: ${{ secrets.AKS_RG }}
+  AKS_CLUSTER_NAME: ${{ secrets.AKS_NAME }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Azure Login
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          client-secret: ${{ secrets.ARM_CLIENT_SECRET }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+
+      # ACR Login
+      - name: ACR Login
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }}
+
+      # Build & Push service A
+      - name: Build & Push service-a
+        run: |
+          docker build -t $REGISTRY/service-a:latest ./services/service-a
+          docker push $REGISTRY/service-a:latest
+
+      # Build & Push service B
+      - name: Build & Push service-b
+        run: |
+          docker build -t $REGISTRY/service-b:latest ./services/service-b
+          docker push $REGISTRY/service-b:latest
+
+      # AKS - Set kubectl context
+      - name: Set AKS context
+        run: |
+          az aks get-credentials \
+            --resource-group $AKS_RESOURCE_GROUP \
+            --name $AKS_CLUSTER_NAME \
+            --overwrite-existing
+
+      # Apply Secrets
+      - name: Apply Secrets
+        run: |
+          kubectl apply -f k8s/secrets.yaml
+
+      # Deploy K8s Resources
+      - name: Deploy Services & Deployments
+        run: |
+          kubectl apply -f k8s/service-a-deployment.yaml
+          kubectl apply -f k8s/service-b-deployment.yaml
+          kubectl apply -f k8s/service-a-service.yaml
+          kubectl apply -f k8s/service-b-service.yaml
+          kubectl apply -f k8s/networkpolicy.yaml
+          kubectl apply -f k8s/ingress.yaml
