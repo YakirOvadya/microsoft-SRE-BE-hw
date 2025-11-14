@@ -12,6 +12,8 @@ spec:
       labels:
         app: service-a
     spec:
+      imagePullSecrets:
+        - name: acr-creds
       containers:
         - name: service-a
           image: hwacryakir.azurecr.io/service-a:latest

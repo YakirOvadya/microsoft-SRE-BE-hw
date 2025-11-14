@@ -120,3 +120,9 @@ resource "azurerm_role_assignment" "github_aks_admin" {
   role_definition_name = "Azure Kubernetes Service Cluster Admin Role"
   scope                = azurerm_kubernetes_cluster.aks.id
 }
+
+resource "azurerm_role_assignment" "github_aks_rbac_admin" {
+  principal_id         = azuread_service_principal.github_sp.id
+  role_definition_name = "Azure Kubernetes Service RBAC Cluster Admin"
+  scope                = azurerm_kubernetes_cluster.aks.id
+}
