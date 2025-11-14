@@ -52,13 +52,6 @@ jobs:
             --name $AKS_CLUSTER_NAME \
             --overwrite-existing
 
-      # Create ACR Pull Secret inside AKS
-      - name: Create ACR Pull Secret
-        run: |
-          TOKEN=$(az acr login --name ${{ secrets.ACR_NAME }} --expose-token --query accessToken -o tsv)
-          DOCKER_CONFIG_JSON=$(echo "{}" | docker login ${{ secrets.ACR_URL }} -u 00000000-0000-0000-0000-000000000000 --password $TOKEN --config ~/.docker --password-stdin >/dev/null 2>&1 && cat ~/.docker/config.json | base64 -w 0)
-          sed "s|ACR_DOCKER_CONFIG_REPLACE_ME|$DOCKER_CONFIG_JSON|g" k8s/acr-secret.yaml | kubectl apply -f -
-
       # Apply App Secrets
       - name: Apply App Secrets
         run: |
