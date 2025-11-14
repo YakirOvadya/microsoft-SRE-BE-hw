@@ -87,24 +87,24 @@ resource "azurerm_role_assignment" "aks_acr_pull" {
 resource "azuread_application" "github_sp_app" {
   display_name = "aks-github-deployer"
 
-  lifecycle {
-    prevent_destroy = true
-  }
+#  lifecycle {
+#    prevent_destroy = true
+#  }
 }
 
 resource "azuread_service_principal" "github_sp" {
   client_id = azuread_application.github_sp_app.client_id
 
-  lifecycle {
-    prevent_destroy = true
-  }
+#  lifecycle {
+#    prevent_destroy = true
+#  }
 }
 
 resource "azuread_service_principal_password" "github_sp_password" {
   service_principal_id = azuread_service_principal.github_sp.id
-  lifecycle {
-    prevent_destroy = true
-  }
+#  lifecycle {
+#    prevent_destroy = true
+#  }
 }
 
 # Role assignment for acr push
