@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-a-to-b
+spec:
+  podSelector:
+    matchLabels:
+      app: service-b
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: service-a
+      ports: []
+  policyTypes:
+    - Ingress

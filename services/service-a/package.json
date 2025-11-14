@@ -1,0 +1,16 @@
+{
+  "name": "service-a",
+  "version": "1.0.0",
+  "description": "Service-A for microsoft assignment",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yakir Ovadya",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "axios": "^1.13.2"    
+  }
+}
