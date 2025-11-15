@@ -47,6 +47,13 @@ jobs:
             --name ${{ secrets.AKS_NAME }} \
             --overwrite-existing
 
+      - name: Debug ACR name
+        run: |
+          echo "ACR NAME = ${{ secrets.ACR_NAME }}"
+          echo "ACR URL = ${{ secrets.ACR_URL }}"
+          echo "AKS RG = ${{ secrets.AKS_RG }}"
+          echo "AKS NAME = ${{ secrets.AKS_NAME }}"
+
       # Attach ACR to AKS
       - name: Attach ACR permissions to AKS
         run: |
