@@ -9,14 +9,4 @@ spec:
       app: service-b
   policyTypes:
     - Ingress
-  ingress:
-    - from:
-        - podSelector:
-            matchExpressions:
-              - key: app
-                operator: NotIn
-                values:
-                  - service-a
-      ports:
-        - protocol: TCP
-          port: 80
+  ingress: []

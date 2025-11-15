@@ -64,21 +64,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
     node_count = 1
     vm_size    = "Standard_B2s"
   }
-
+  
   identity {
     type = "SystemAssigned"
   }
 
   role_based_access_control_enabled = true
-}
-
-resource "azurerm_kubernetes_cluster_node_pool" "apps" {
-  name                  = "apps"
-  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
-
-  vm_size    = "Standard_B2s"
-  node_count = 1
-  mode       = "User"
 }
 
 # ---------------------------------------------------------------------------------------------------------
@@ -123,7 +114,7 @@ resource "azurerm_role_assignment" "github_acr_push" {
   scope                = azurerm_container_registry.acr.id
 }
 
-# Role assignment for aks admin
+# Roles assignment for github to be aks admin
 resource "azurerm_role_assignment" "github_aks_admin" {
   principal_id         = azuread_service_principal.github_sp.id
   role_definition_name = "Azure Kubernetes Service Cluster Admin Role"
@@ -136,6 +127,7 @@ resource "azurerm_role_assignment" "github_aks_rbac_admin" {
   scope                = azurerm_kubernetes_cluster.aks.id
 }
 
+# Role for pods to able to pull from acr
 resource "azurerm_role_assignment" "aks_kubelet_acr_pull" {
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
   role_definition_name = "AcrPull"
