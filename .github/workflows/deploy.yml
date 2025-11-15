@@ -11,6 +11,7 @@ env:
   REGISTRY: ${{ secrets.ACR_URL }}
   AKS_RESOURCE_GROUP: ${{ secrets.AKS_RG }}
   AKS_CLUSTER_NAME: ${{ secrets.AKS_NAME }}
+  ACR_NAME: ${{ secrets.ACR_NAME }}
 
 jobs:
   build-and-deploy:
@@ -30,7 +31,7 @@ jobs:
       # ACR Login
       - name: ACR Login
         run: |
-          az acr login --name ${{ secrets.ACR_NAME }}
+          az acr login --name $ACR_NAME
 
       # Build & Push service A
       - name: Build & Push service-a
@@ -58,7 +59,7 @@ jobs:
           az aks update \
             --resource-group $AKS_RESOURCE_GROUP \
             --name $AKS_CLUSTER_NAME \
-            --attach-acr ${{ secrets.ACR_NAME }}
+            --attach-acr $ACR_NAME
 
       # Apply App Secrets
       - name: Apply App Secrets
