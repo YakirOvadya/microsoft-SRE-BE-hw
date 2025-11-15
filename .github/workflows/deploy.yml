@@ -8,8 +8,10 @@ on:
   workflow_dispatch:
 
 env:
-  ACTIONS_STEP_DEBUG: true
-  ACTIONS_RUNNER_DEBUG: true
+  REGISTRY: ${{ secrets.ACR_URL }}
+  AKS_RESOURCE_GROUP: ${{ secrets.AKS_RG }}
+  AKS_CLUSTER_NAME: ${{ secrets.AKS_NAME }}
+  ACR_NAME: ${{ secrets.ACR_NAME }}
 
 jobs:
   build-and-deploy:
@@ -20,6 +22,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: check secrets
+        run: |
+          echo "Length of REGISTRY ${#REGISTRY}"
+          echo "Length of AKS_RESOURCE_GROUP ${#AKS_RESOURCE_GROUP}"
+          echo "AKS_CLUSTER_NAME ${#AKS_CLUSTER_NAME}"
+          echo "Length of ACR_NAME ${#ACR_NAME}"
+
       # Azure Login
       - name: Azure Login
         uses: azure/login@v1
@@ -29,40 +38,35 @@ jobs:
       # ACR Login
       - name: ACR Login
         run: |
-          az acr login --name ${{ secrets.ACR_NAME }}
+          az acr login --name $ACR_NAME
 
       # Build & Push service A
       - name: Build & Push service-a
         run: |
-          docker build -t ${{ secrets.ACR_URL }}/service-a:latest ./services/service-a
-          docker push ${{ secrets.ACR_URL }}/service-a:latest
+          docker build -t $REGISTRY/service-a:latest ./services/service-a
+          docker push $REGISTRY/service-a:latest
 
       # Build & Push service B
       - name: Build & Push service-b
         run: |
-          docker build -t ${{ secrets.ACR_URL }}/service-b:latest ./services/service-b
-          docker push ${{ secrets.ACR_URL }}/service-b:latest
+          docker build -t $REGISTRY/service-b:latest ./services/service-b
+          docker push $REGISTRY/service-b:latest
 
       # AKS - Set kubectl context
       - name: Set AKS context
         run: |
           az aks get-credentials \
-            --resource-group ${{ secrets.AKS_RG }} \
-            --name ${{ secrets.AKS_NAME }} \
+            --resource-group $AKS_RESOURCE_GROUP \
+            --name $AKS_CLUSTER_NAME \
             --overwrite-existing
-
-      - name: Raw debug
-        run: |
-          echo "::warning::ACR_NAME length is: ${#{{ secrets.ACR_NAME }} }"
-          echo "::warning::AKS_RG length is: ${#{{ secrets.AKS_RG }} }"
 
       # Attach ACR to AKS
       - name: Attach ACR permissions to AKS
         run: |
           az aks update \
-            --resource-group ${{ secrets.AKS_RG }} \
-            --name ${{ secrets.AKS_NAME }} \
-            --attach-acr ${{ secrets.ACR_NAME }}
+            --resource-group $AKS_RESOURCE_GROUP \
+            --name $AKS_CLUSTER_NAME \
+            --attach-acr $ACR_NAME
 
       # Apply App Secrets
       - name: Apply App Secrets
