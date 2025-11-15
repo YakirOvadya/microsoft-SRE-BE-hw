@@ -52,6 +52,14 @@ jobs:
             --name $AKS_CLUSTER_NAME \
             --overwrite-existing
 
+      # Attach ACR to AKS
+      - name: Attach ACR permissions to AKS
+        run: |
+          az aks update \
+            --resource-group $AKS_RESOURCE_GROUP \
+            --name $AKS_CLUSTER_NAME \
+            --attach-acr ${{ secrets.ACR_NAME }}
+
       # Apply App Secrets
       - name: Apply App Secrets
         run: |
