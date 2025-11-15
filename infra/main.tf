@@ -72,6 +72,15 @@ resource "azurerm_kubernetes_cluster" "aks" {
   role_based_access_control_enabled = true
 }
 
+resource "azurerm_kubernetes_cluster_node_pool" "apps" {
+  name                  = "apps"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.aks.id
+
+  vm_size    = "Standard_B2s"
+  node_count = 1
+  mode       = "User"
+}
+
 # ---------------------------------------------------------------------------------------------------------
 # Allow AKS to pull images from ACR
 

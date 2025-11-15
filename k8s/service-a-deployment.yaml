@@ -12,6 +12,8 @@ spec:
       labels:
         app: service-a
     spec:
+      nodeSelector:
+        agentpool: system
       containers:
         - name: service-a
           image: hwacryakir.azurecr.io/service-a:latest
