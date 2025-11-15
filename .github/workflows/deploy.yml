@@ -61,9 +61,16 @@ jobs:
             --overwrite-existing
 
       # Apply App Secrets
-      - name: Apply App Secrets
+      - name: Create Secrets
         run: |
-          kubectl apply -f k8s/secrets.yaml
+          kubectl delete secret coinstat-key --ignore-not-found
+          kubectl delete secret coinstat-url --ignore-not-found
+
+          kubectl create secret generic coinstat-key \
+            --from-literal=apiKey="${{ secrets.COINSTAT_KEY }}"
+
+          kubectl create secret generic coinstat-url \
+            --from-literal=apiUrl="${{ secrets.COINSTAT_URL }}"
 
       # Deploy K8s Resources
       - name: Deploy Services & Deployments
