@@ -51,12 +51,10 @@ jobs:
             --name ${{ secrets.AKS_NAME }} \
             --overwrite-existing
 
-      - name: Debug ACR name
+      - name: Raw debug
         run: |
-          echo "ACR NAME = ${{ secrets.ACR_NAME }}"
-          echo "ACR URL = ${{ secrets.ACR_URL }}"
-          echo "AKS RG = ${{ secrets.AKS_RG }}"
-          echo "AKS NAME = ${{ secrets.AKS_NAME }}"
+          echo "::warning::ACR_NAME length is: ${#{{ secrets.ACR_NAME }} }"
+          echo "::warning::AKS_RG length is: ${#{{ secrets.AKS_RG }} }"
 
       # Attach ACR to AKS
       - name: Attach ACR permissions to AKS
