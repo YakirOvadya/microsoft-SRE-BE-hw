@@ -56,7 +56,7 @@ fetchBitcoinValue();
 setInterval(fetchBitcoinValue, 60 * 1000);
 setInterval(printAverage, 10 * 60 * 1000);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Service A running & listening on port ${PORT}`);
 });
