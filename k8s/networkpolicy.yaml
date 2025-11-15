@@ -6,11 +6,13 @@ spec:
   podSelector:
     matchLabels:
       app: service-b
+  policyTypes:
+    - Ingress
   ingress:
     - from:
         - podSelector:
-            matchLabels:
-              app: service-a
-      ports: []
-  policyTypes:
-    - Ingress
+            matchExpressions:
+              - key: app
+                operator: NotIn
+                values:
+                  - service-a
