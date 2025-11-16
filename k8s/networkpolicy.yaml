@@ -1,12 +1,20 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: deny-a-to-b
-  namespace: default
+  name: block-a-to-b
 spec:
   podSelector:
     matchLabels:
-      app: service-b
+      app: service-a
   policyTypes:
-    - Ingress
-  ingress: []
+    - Egress
+  egress:
+    # Allow to everything EXCEPT service-b
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchExpressions:
+              - key: app
+                operator: NotIn
+                values:
+                  - service-b

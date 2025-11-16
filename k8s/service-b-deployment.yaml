@@ -12,8 +12,6 @@ spec:
       labels:
         app: service-b
     spec:
-      nodeSelector:
-        agentpool: apps
       containers:
         - name: service-b
           image: hwacryakir.azurecr.io/service-b:latest
