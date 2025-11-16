@@ -65,4 +65,4 @@ The entire cluster can be deployed repeatedly from scratch using Terraform + Git
 
 Below is an example of the running system, where the users are fetched from MongoDB and the SHA tag is displayed via the Express consumer service:
 
-![visual-output](https://raw.githubusercontent.com/yakirovadya/mongo-data/refs/heads/main/images/run.png)
+![visual-output](https://raw.githubusercontent.com/yakirovadya/microsoft-SRE-BE-hw/blob/main/images/visual-output.png)
