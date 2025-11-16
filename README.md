@@ -25,6 +25,7 @@ The entire cluster can be deployed repeatedly from scratch using Terraform + Git
 ## Manual Execution Instructions
 
 1. When you running the project for the first time, you must provision the Azure AKS cluster using Terraform.
+
    Move into the `/infra` directory and run on cmd:
 
    - `az login`
