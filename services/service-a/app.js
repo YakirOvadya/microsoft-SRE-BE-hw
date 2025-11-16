@@ -11,7 +11,7 @@ let avg = 0;
 
 app.get("/", (req, res) => {
   res.json({
-    status: "service a (pod) is running",
+    status: "Service-A (pod) is running",
     last_BTC_samples: prices,
     last_avg_calculated: avg,
   });

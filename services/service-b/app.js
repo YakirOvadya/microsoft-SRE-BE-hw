@@ -3,7 +3,7 @@ const app = express();
 
 app.get("/", (req, res) => {
   res.json({
-    status: "running",
+    status: "Service-B(pod) is running",
     message: "Hello Microsoft - from Service B",
   });
 });
