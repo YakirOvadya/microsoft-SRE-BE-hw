@@ -81,3 +81,8 @@ jobs:
           kubectl apply -f k8s/service-b-service.yaml
           kubectl apply -f k8s/networkpolicy.yaml
           kubectl apply -f k8s/ingress.yaml
+
+      # Install ingress-nginx LoadBalancer Controller
+      - name: Install ingress-nginx LoadBalancer Controller
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.1/deploy/static/provider/cloud/deploy.yaml

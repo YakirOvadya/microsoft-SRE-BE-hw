@@ -1,20 +1,15 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: block-a-to-b
+  name: allow-ingress-controller-to-b
 spec:
   podSelector:
     matchLabels:
-      app: service-a
+      app: service-b
   policyTypes:
-    - Egress
-  egress:
-    # Allow to everything EXCEPT service-b
-    - to:
-        - namespaceSelector: {}
-          podSelector:
-            matchExpressions:
-              - key: app
-                operator: NotIn
-                values:
-                  - service-b
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
