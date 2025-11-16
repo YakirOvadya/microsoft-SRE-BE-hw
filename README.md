@@ -61,8 +61,10 @@ The entire cluster can be deployed repeatedly from scratch using Terraform + Git
 
    The request should fail, Service-A cannot communicate with Service-B, as enforced by the NetworkPolicy.
 
+7. To destroy the cluster run:
+
+   `terraform destroy`
+
 ## Visual Output
 
-Below is an example of the running system, where the users are fetched from MongoDB and the SHA tag is displayed via the Express consumer service:
-
-![visual-output](https://raw.githubusercontent.com/yakirovadya/microsoft-SRE-BE-hw/blob/main/images/visual-output.png)
+![visual output](https://raw.githubusercontent.com/YakirOvadya/microsoft-SRE-BE-hw/main/images/visual-output.png)
