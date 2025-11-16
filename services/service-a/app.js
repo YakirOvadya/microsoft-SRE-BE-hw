@@ -7,11 +7,13 @@ const API_URL = process.env.COINSTAT_URL;
 const API_KEY = process.env.COINSTAT_KEY;
 
 let prices = [];
+let avg = 0;
 
 app.get("/", (req, res) => {
   res.json({
-    status: "running",
-    lastBTCsamples: prices,
+    status: "service a (pod) is running",
+    last_BTC_samples: prices,
+    last_avg_calculated: 
   });
 });
 
@@ -45,7 +47,7 @@ function printAverage() {
     for (const i of prices) {
       sum = sum + i;
     }
-    const avg = sum / prices.length;
+    avg = sum / prices.length;
     console.log(`BTC average value of the last 10 mins: ${avg.toFixed(2)}$`);
   }
 }
