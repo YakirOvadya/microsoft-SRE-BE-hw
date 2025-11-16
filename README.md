@@ -36,20 +36,28 @@ The entire cluster can be deployed repeatedly from scratch using Terraform + Git
 2. Navigate to GitHub → Actions, select the workflow: “Build & Deploy to AKS” and trigger it manually using Run workflow.
 
 3. After deployment, get the LoadBalancer external IP of the Ingress Controller:
+
    `kubectl get svc -n ingress-nginx`
+
    Look for the ingress-nginx-controller service under the EXTERNAL-IP column.
 
 4. Open your browser and navigate to:
+
    `<external-ip>/service-a`
    `<external-ip>/service-b`
+
    If everything is configured correctly, you should receive valid responses from the pods through the Ingress Controller.
 
 5. To check recent Bitcoin API fetches:
+
    `kubectl logs deploy/<Your-Service>`
+
    You will see each 1-minute update and 10-minute average, including timestamps.
 
 6. To check Networkpolicy run:
+
    `kubectl exec -it deploy/service-a -- curl -v http://service-b`
+
    The request should fail, Service-A cannot communicate with Service-B, as enforced by the NetworkPolicy.
 
 ## Visual Output
