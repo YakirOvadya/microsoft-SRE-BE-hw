@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.json({
     status: "service a (pod) is running",
     last_BTC_samples: prices,
-    last_avg_calculated: 
+    last_avg_calculated: avg,
   });
 });
 
